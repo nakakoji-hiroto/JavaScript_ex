@@ -1,24 +1,8 @@
 // じゃんけんの手を入力してもらうプロンプト欄を生成
 let user_hand = prompt('じゃんけんの手をグー、チョキ、パーから選んでください。');
+user_hand = check_hand(user_hand); //ここで戻り値がnullなら以下の処理は行わない
 
-function check_hand(user_hand){
-  let u_hand = user_hand;
-  if(u_hand == null){
-    alert('またチャレンジしてね');
-    return;
-  } else {
-      while(u_hand != "グー" && u_hand != "チョキ" && u_hand != "パー"){
-      alert('グー・チョキ・パーのいずれかを入力してください');
-      u_hand = prompt('じゃんけんの手をグー、チョキ、パーから選んでください。');
-       if(u_hand == null){
-        alert('またチャレンジしてね');
-        return;
-      }
-    return u_hand;
-  }
-}
-
-
+if(user_hand != null) {
 // じゃんけんの手をランダムに作成する関数を呼び出す
 let js_hand = getJShand();
 
@@ -26,11 +10,12 @@ let js_hand = getJShand();
 let judge = winLose(user_hand, js_hand);
 
 // 結果を表示する
-
 alert('あなたの選んだ手は' + user_hand + 'です。\nJavaScriptの選んだ手は' + js_hand + 'です。\n結果は' + judge + 'です。');
+}
+
+// 以下は関数の定義
 
 // ランダムでじゃんけんの手を作成する関数
-
 function getJShand(){
   let js_hand_num = Math.floor( Math.random() * 3);
   let hand_name;
@@ -77,4 +62,20 @@ function winLose(user, js){
   }
 
   return winLoseStr;
+}
+
+// プロンプトにグー、チョキ、パーのいずれかが入力されるまで、アラートを出し、プロンプトを再表示する
+// キャンセルボタンがクリックされた場合は、専用のアラートを表示し、null を出力してメソッドを終了する
+function check_hand(user_hand){
+  let u_hand = user_hand;
+  while(u_hand != "グー" && u_hand != "チョキ" && u_hand != "パー" || u_hand == null){
+    if(u_hand == null){
+      alert('またチャレンジしてね');
+      return u_hand;
+    }else {
+      alert('グー・チョキ・パーのいずれかを入力してください');
+      u_hand = prompt('じゃんけんの手をグー、チョキ、パーから選んでください。');
+    }
+  }
+  return u_hand;
 }
